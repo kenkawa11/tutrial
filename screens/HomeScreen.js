@@ -1,7 +1,7 @@
 import { array } from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions, FlatList } from 'react-native';
-import { Button, TextInput, DataTable } from 'react-native-paper';
+import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions} from 'react-native';
+import { Button, DataTable, TextInput  } from 'react-native-paper';
 //import {gammaln} from '../Lib/mathfunc'
 
 
@@ -16,34 +16,6 @@ export default function CoursePossibility() {
     const [mpc, setMpc] = React.useState("___")
     let iniobj = [{ coursename: "", pos: "" }];
     const [coursedata, setdata] = React.useState(iniobj);
-
-    var setResult2 = () => {
-        var obj = calc(targetclass, classnum, order, allnum);
-        if (obj) {
-            let pos = obj.possibility
-            let pro = obj.probclass
-            setRslt(pos);
-            let arufa_half = toHalfWidth(arufa);
-            let int_course_num = Number(toHalfWidth(classnum));
-            if (!isNaN(arufa_half.trim()) && arufa_half.trim() != "") {
-                let int_arufa_num = Number(arufa_half);
-                if (0 < int_arufa_num && int_arufa_num < int_course_num) {
-                    var rstlstring = translationCourse(pro, int_arufa_num, int_course_num)
-                    setMpc(rstlstring)
-                    return
-                }
-            }
-
-            if (!isNaN(pro)) {
-                var rstlstring = pro + "番目"
-                setMpc(rstlstring)
-                return
-
-            }
-
-        }
-    }
-
 
     var setResult = () => {
         var obj = calc(targetclass, classnum, order, allnum);

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 import CoursePossibility from '../screens/HomeScreen';
+//import CoursePossibility from '../screens/ResultShow';
 
 const PossibilityRoute = () => <CoursePossibility/>;
 
@@ -11,7 +12,7 @@ export default class AppNavigator extends React.Component {
         index: 0,
         routes: [
             { key: 'pos', title: 'コース在籍確率計算', icon: 'album' },
-            { key: 'dev', title: 'コース偏差値計算', icon: 'history' },
+            { key: 'dev', title: '結果表示', icon: 'history' },
         ],
     };
 

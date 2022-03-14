@@ -25,7 +25,6 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.s205.xrea.jukendata.pos",
-      "windowSoftInputMode":"stateVisible|adjustPan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
