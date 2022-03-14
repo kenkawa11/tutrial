@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "nativetest",
+    "name": "course_possibility",
     "slug": "nativetest",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.s205.xrea.jukendata.pos"
     },
     "web": {
       "favicon": "./assets/favicon.png"
