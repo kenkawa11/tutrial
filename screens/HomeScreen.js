@@ -1,9 +1,9 @@
 import { array } from 'prop-types';
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions} from 'react-native';
-import { Button, DataTable, TextInput  } from 'react-native-paper';
+import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions } from 'react-native';
+import { Button, DataTable, TextInput } from 'react-native-paper';
 //import {gammaln} from '../Lib/mathfunc'
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 export default function CoursePossibility() {
     //const [inputdata,setInputdata]=React.useState({target:"",classnum:"",order:"",allnum:""});
@@ -48,9 +48,9 @@ export default function CoursePossibility() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>S塾のコースに入れる確率を計算</Text>
-            <ScrollView style={{width:"90%"}}>
+            <ScrollView style={{ width: "90%" }}>
                 <View style={styles.cndinp}>
-                    <Text style={{ fontSize: 13}}>目標コース:{"\n"}
+                    <Text style={styles.cndinptxt}>目標コース:{"\n"}
                         上から何番目かの数値又はアルファベットコース名で指定{"\n"}
                         アルファは数値で指定(例:α2なら2)
                     </Text>
@@ -64,7 +64,7 @@ export default function CoursePossibility() {
                 </View>
 
                 <View style={styles.cndinp}>
-                    <Text style={{ fontSize: 13 }}>
+                    <Text style={styles.cndinptxt}>
                         在籍校舎の全コース数を入力
                     </Text>
                     <TextInput
@@ -76,7 +76,7 @@ export default function CoursePossibility() {
                     />
                 </View>
                 <View style={styles.cndinp}>
-                    <Text style={{ fontSize: 13 }}>
+                    <Text style={styles.cndinptxt}>
                         総合順位を入力
                     </Text>
                     <TextInput
@@ -88,7 +88,7 @@ export default function CoursePossibility() {
                     />
                 </View>
                 <View style={styles.cndinp}>
-                    <Text style={{ fontSize: 13 }}>
+                    <Text style={styles.cndinptxt}>
                         テストの全受験者数を入力
                     </Text>
                     <TextInput
@@ -100,7 +100,7 @@ export default function CoursePossibility() {
                     />
                 </View>
                 <View style={styles.cndinp}>
-                    <Text style={{ fontSize: 13 }}>
+                    <Text style={styles.cndinptxt}>
                         αコース数を入力。入れなくても計算可能だがコース名は非表示
                     </Text>
                     <TextInput
@@ -113,7 +113,7 @@ export default function CoursePossibility() {
                 </View>
                 <View style={styles.cndinp}>
                     <Button mode="contained" onPress={setResult}>
-                        計算
+                        計算(1回でうまくいかない場合はも一回タッチ)
                     </Button>
                 </View>
                 <View>
@@ -169,7 +169,16 @@ const styles = StyleSheet.create({
     cndinp: {
         width: "100%",
         //backgroundColor:"red",
-        marginTop: 25,
+        marginTop: hp("1.6%"),
+        //backgroundColor:"lightblue"
+        //backgroundColor: '#fff',
+        //alignItems: 'center',
+        //justifyContent: 'space-between',
+    },
+
+    cndinptxt: {
+        fontSize: wp("3%"),
+        //backgroundColor:"red",
         //backgroundColor:"lightblue"
         //backgroundColor: '#fff',
         //alignItems: 'center',
@@ -182,9 +191,9 @@ const styles = StyleSheet.create({
     },
 
     rslt: {
-        marginTop: 30,
+        marginTop: hp("2%"),
         fontWeight: "bold",
-        fontSize: 20,
+        fontSize: hp('2%'),
         //backgroundColor:"lightblue",
         textAlign: "center"
 
@@ -193,7 +202,7 @@ const styles = StyleSheet.create({
     title: {
         height: 60,
         width: "100%",
-        fontSize: 24,
+        fontSize: hp('3%'),
         fontWeight: 'bold',
         color: "#fff",
         backgroundColor: "indigo",
@@ -202,7 +211,7 @@ const styles = StyleSheet.create({
     },
 
     tabletxt: {
-        fontSize: 20,
+        fontSize: hp('2%'),
         fontWeight: "bold"
 
     }
