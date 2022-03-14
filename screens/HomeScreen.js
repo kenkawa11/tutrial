@@ -76,86 +76,90 @@ export default function CoursePossibility() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>S塾のコースに入れる確率を計算</Text>
-            <View style={styles.cndinp}>
-                <Text style={{ fontSize: 13 }}>目標コース:{"\n"}
-                    上から何番目かの数値又はアルファベットコース名で指定{"\n"}
-                    アルファは数値で指定(例:α2なら2)
-                </Text>
-                <TextInput
-                    label="目標コース"
-                    mode="outlined"
-                    value={targetclass}
-                    dense={true}
-                    onChangeText={text => setTarget(text)}
-                />
-            </View>
-            <View style={styles.cndinp}>
-                <Text style={{ fontSize: 13 }}>
-                    在籍校舎の全コース数を入力
-                </Text>
-                <TextInput
-                    label="校舎全コース数"
-                    mode="outlined"
-                    value={classnum}
-                    dense={true}
-                    onChangeText={text => setClassnum(text)}
-                />
-            </View>
-            <View style={styles.cndinp}>
-                <Text style={{ fontSize: 13 }}>
-                    総合順位を入力
-                </Text>
-                <TextInput
-                    label="総合順位"
-                    mode="outlined"
-                    value={order}
-                    dense={true}
-                    onChangeText={text => setOrder(text)}
-                />
-            </View>
-            <View style={styles.cndinp}>
-                <Text style={{ fontSize: 13 }}>
-                    テストの全受験者数を入力
-                </Text>
-                <TextInput
-                    label="全受験者数"
-                    mode="outlined"
-                    value={allnum}
-                    dense={true}
-                    onChangeText={text => setAllnum(text)}
-                />
-            </View>
-            <View style={styles.cndinp}>
-                <Text style={{ fontSize: 13 }}>
-                    αコース数を入力。入れなくても計算可能だがコース名は非表示
-                </Text>
-                <TextInput
-                    label="αコース数"
-                    mode="outlined"
-                    value={arufa}
-                    dense={true}
-                    onChangeText={text => setArufa(text)}
-                />
-            </View>
-            <View style={styles.cndinp}>
-                <Button mode="contained" onPress={setResult}>
-                    計算
-                </Button>
-            </View>
-            <View>
-                <Text style={styles.rslt}>
-                    目標コース以上に入れる確率:{rslt}%
-                </Text>
-            </View>
-            < ScrollView style={{ width: "80%" }}>
-                <DataTable>
-                    <DataTable.Header style={{ borderWidth: 2, padding: 0, backgroundColor: "lightyellow" }}>
-                        <DataTable.Title style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>コース</Text></DataTable.Title>
-                        <DataTable.Title style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>確率</Text></DataTable.Title>
-                    </DataTable.Header>
+            <ScrollView style={{width:"90%"}}>
+                <View style={styles.cndinp}>
+                    <Text style={{ fontSize: 13}}>目標コース:{"\n"}
+                        上から何番目かの数値又はアルファベットコース名で指定{"\n"}
+                        アルファは数値で指定(例:α2なら2)
+                    </Text>
+                    <TextInput
+                        label="目標コース"
+                        mode="outlined"
+                        value={targetclass}
+                        dense={true}
+                        onChangeText={text => setTarget(text)}
+                    />
+                </View>
 
-                    {coursedata.map((arry, i) => { return arry.coursename != "" ? <Tablecomponent course={arry.coursename} pos={arry.pos} index={i} key={arry.coursename} /> : null })}
-                </DataTable>
+                <View style={styles.cndinp}>
+                    <Text style={{ fontSize: 13 }}>
+                        在籍校舎の全コース数を入力
+                    </Text>
+                    <TextInput
+                        label="校舎全コース数"
+                        mode="outlined"
+                        value={classnum}
+                        dense={true}
+                        onChangeText={text => setClassnum(text)}
+                    />
+                </View>
+                <View style={styles.cndinp}>
+                    <Text style={{ fontSize: 13 }}>
+                        総合順位を入力
+                    </Text>
+                    <TextInput
+                        label="総合順位"
+                        mode="outlined"
+                        value={order}
+                        dense={true}
+                        onChangeText={text => setOrder(text)}
+                    />
+                </View>
+                <View style={styles.cndinp}>
+                    <Text style={{ fontSize: 13 }}>
+                        テストの全受験者数を入力
+                    </Text>
+                    <TextInput
+                        label="全受験者数"
+                        mode="outlined"
+                        value={allnum}
+                        dense={true}
+                        onChangeText={text => setAllnum(text)}
+                    />
+                </View>
+                <View style={styles.cndinp}>
+                    <Text style={{ fontSize: 13 }}>
+                        αコース数を入力。入れなくても計算可能だがコース名は非表示
+                    </Text>
+                    <TextInput
+                        label="αコース数"
+                        mode="outlined"
+                        value={arufa}
+                        dense={true}
+                        onChangeText={text => setArufa(text)}
+                    />
+                </View>
+                <View style={styles.cndinp}>
+                    <Button mode="contained" onPress={setResult}>
+                        計算
+                    </Button>
+                </View>
+                <View>
+                    <Text style={styles.rslt}>
+                        目標コース以上に入れる確率:{rslt}%
+                    </Text>
+                </View>
+                {
+                    coursedata[0].coursename != "" ?
+                        <DataTable>
+                            <DataTable.Header style={{ borderWidth: 2, padding: 0, backgroundColor: "lightyellow" }}>
+                                <DataTable.Title style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>コース</Text></DataTable.Title>
+                                <DataTable.Title style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>確率</Text></DataTable.Title>
+                            </DataTable.Header>
+                            {coursedata.map((arry, i) => { return arry.coursename != "" ? <Tablecomponent course={arry.coursename} pos={arry.pos} index={i} key={arry.coursename} /> : null })}
+                        </DataTable>
+                        : null
+                }
             </ScrollView>
         </View >
     );
@@ -187,15 +191,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "lightgreen",
-        //flex: 1,
         paddingTop: StatusBar.currentHeight,
-        //backgroundColor: '#fff',
         alignItems: 'center',
-        //justifyContent: 'space-between',
     },
     cndinp: {
-        width: "90%",
-        paddingTop: StatusBar.currentHeight,
+        width: "100%",
+        //backgroundColor:"red",
+        marginTop: 25,
+        //backgroundColor:"lightblue"
         //backgroundColor: '#fff',
         //alignItems: 'center',
         //justifyContent: 'space-between',
@@ -207,10 +210,11 @@ const styles = StyleSheet.create({
     },
 
     rslt: {
-        width: "80%",
-        paddingTop: 30,
+        marginTop: 30,
         fontWeight: "bold",
-        fontSize: 25
+        fontSize: 20,
+        //backgroundColor:"lightblue",
+        textAlign: "center"
 
     },
 
