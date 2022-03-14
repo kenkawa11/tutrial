@@ -101,7 +101,7 @@ export default function CoursePossibility() {
                 </View>
                 <View style={styles.cndinp}>
                     <Text style={styles.cndinptxt}>
-                        αコース数を入力。入れなくても計算可能だがコース名は非表示
+                        αコース数を入力。入れなくてもOKだがコース名は非表示
                     </Text>
                     <TextInput
                         label="αコース数"
@@ -113,7 +113,7 @@ export default function CoursePossibility() {
                 </View>
                 <View style={styles.cndinp}>
                     <Button mode="contained" onPress={setResult}>
-                        計算(1回でうまくいかない場合はも一回タッチ)
+                        <Text style={{fontSize:wp("3%")}}>計算(1回でうまくいかない場合はもう一回タッチ)</Text>
                     </Button>
                 </View>
                 <View>
