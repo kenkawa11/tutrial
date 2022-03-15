@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 import CoursePossibility from '../screens/HomeScreen';
-//import CoursePossibility from '../screens/ResultShow';
 
 const PossibilityRoute = () => <CoursePossibility/>;
 
