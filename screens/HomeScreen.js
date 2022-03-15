@@ -1,8 +1,7 @@
-import { array } from 'prop-types';
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions } from 'react-native';
 import { Button, DataTable, TextInput } from 'react-native-paper';
-//import {gammaln} from '../Lib/mathfunc'
+import {gammaln} from '../Lib/mathfunc'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 export default function CoursePossibility({ navigation }) {
@@ -21,7 +20,7 @@ export default function CoursePossibility({ navigation }) {
         if (!cndobj) {
             return;
         }
-        let poslist = orderposlist(cndobj.rank, cndobj.order, cndobj.kosha_course_num, cndobj.total);
+        let poslist = orderposlist(cndobj.order, cndobj.kosha_course_num, cndobj.total);
         let pos = calc(cndobj.rank, cndobj.kosha_course_num, cndobj.order, cndobj.total);
         setRslt(pos);
         let arufa_half = toHalfWidth(arufa);
@@ -38,15 +37,15 @@ export default function CoursePossibility({ navigation }) {
             int_arufa_num = -1;
         }
         var objlist = poslist.map((value, index) => { return { coursename: translationCourse(index + 1, int_arufa_num, int_course_num), pos: value } });
-        var item = { targetclass:cndobj.rank,targetresult: pos, courseposlist: objlist }
+        var item = { targetclass: cndobj.rank, targetresult: pos, courseposlist: objlist }
         const { width, height, scale } = Dimensions.get('window');
         setdata(objlist);
-        navigation.navigate("結果", item);
+        navigation.navigate("ResultScreen", item);
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>S塾のコースに入れる確率を計算</Text>
+            <Text style={styles.title}>S塾の目標コースに入れる確率を計算</Text>
             <ScrollView style={{ width: "90%" }}>
                 <View style={styles.cndinp}>
                     <Text style={styles.cndinptxt}>目標コース:{"\n"}
@@ -115,51 +114,17 @@ export default function CoursePossibility({ navigation }) {
                         <Text style={{ fontSize: wp("3%") }}>計算(1回でうまくいかない場合はもう一回タッチ)</Text>
                     </Button>
                 </View>
-                <View>
-                    <Text style={styles.rslt}>
-                        目標コース以上に入れる確率:{rslt}%
-                    </Text>
-                </View>
-                {
-                    coursedata[0].coursename != "" ?
-                        <DataTable>
-                            <DataTable.Header style={{ borderWidth: 2, padding: 0, backgroundColor: "lightyellow" }}>
-                                <DataTable.Title style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>コース</Text></DataTable.Title>
-                                <DataTable.Title style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>確率</Text></DataTable.Title>
-                            </DataTable.Header>
-                            {coursedata.map((arry, i) => { return arry.coursename != "" ? <Tablecomponent course={arry.coursename} pos={arry.pos} index={i} key={arry.coursename} /> : null })}
-                        </DataTable>
-                        : null
-                }
             </ScrollView>
         </View >
     );
 }
 
-function Tablecomponent(props) {
-    var colorcode;
-    if (props.index % 2 === 0) {
-        colorcode = "#bbb";
-    }
-    else {
-        colorcode = "#ddd";
-    }
 
-    return (
-
-        <DataTable.Row style={{ borderWidth: 2, padding: 0, backgroundColor: colorcode }}>
-            <DataTable.Cell style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>{props.course}</Text></DataTable.Cell>
-            <DataTable.Cell style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>{props.pos}%</Text></DataTable.Cell>
-        </DataTable.Row>
-
-    )
-}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "lightgreen",
-        paddingTop: StatusBar.currentHeight,
         alignItems: 'center',
     },
     cndinp: {
@@ -223,7 +188,7 @@ function translationCourse(rank, arufa, totalcoursenum) {
     return betname;
 }
 
-function orderposlist(targetclass, order, course_num, total) {
+function orderposlist(order, course_num, total) {
     var koshaninzu = course_num * 18;
     let orderpos = [];
     for (let i = 1; i <= koshaninzu; i++) {
@@ -231,8 +196,6 @@ function orderposlist(targetclass, order, course_num, total) {
 
     }
     var classpos = [];
-    var maxindex = 0;
-    var maxval = 0;
     for (let j = 0; j < course_num; j++) {
         var head = j * 18 + 1;
         var sum = 0;
@@ -331,8 +294,6 @@ function calc(target_class_num, course_num, order, total) {
     } else {
         integrate_ninzu = kosha_ninzu;
     }
-
-
     /////自分より上の順位が校舎に何人いるか積分している。target_order以上いればそのコースには入れない
     let pos_sum = 0;
     for (var upperInKosha = target_order; upperInKosha <= integrate_ninzu; upperInKosha++) {
@@ -341,7 +302,7 @@ function calc(target_class_num, course_num, order, total) {
         D = total_lower - B;
         pos_sum = pos_sum + fispos(upperInKosha, B, C, D, kosha_ninzu, other_kousha_ninzu, total_order, total_lower, total_ninzu);
     }
-    return  Math.round((1 - pos_sum) * 100);
+    return Math.round((1 - pos_sum) * 100);
 }
 
 
@@ -352,67 +313,5 @@ function toHalfWidth(input) {
         });
 }
 
-function gammaln(z) {
-    var p = [
-        676.5203681218851,
-        -1259.1392167224028,
-        771.32342877765313,
-        -176.61502916214059,
-        12.507343278686905,
-        -0.13857109526572012,
-        9.9843695780195716e-6,
-        1.5056327351493116e-7
-    ];
-    var g = 7;
-    var LN_PI = Math.log(Math.PI);
-
-    if (z < 0.5) {
-        return LN_PI - Math.log(Math.sin(Math.PI * z)) - GammaLN(1 - z);
-    }
-    z--;
-    var x = 0.99999999999980993;
-
-    for (var i = p.length; i--;) {
-        x += p[i] / (z + i + 1);
-    }
-
-    var t = z + g + 0.5;
-    return (LN_PI + Math.LN2) / 2 + Math.log(x) + (z + 0.5) * Math.log(t) - t;
-
-}
-
-
-var GammaLN = (function () {
-    var p = [
-        676.5203681218851,
-        -1259.1392167224028,
-        771.32342877765313,
-        -176.61502916214059,
-        12.507343278686905,
-        -0.13857109526572012,
-        9.9843695780195716e-6,
-        1.5056327351493116e-7
-    ];
-    var g = 7;
-    var LN_PI = Math.log(Math.PI);
-
-    function GammaLN(z) {
-        if (z < 0.5) {
-            return LN_PI - Math.log(Math.sin(Math.PI * z)) - GammaLN(1 - z);
-        }
-
-        z--;
-        var x = 0.99999999999980993;
-
-        for (var i = p.length; i--;) {
-            x += p[i] / (z + i + 1);
-        }
-
-        var t = z + g + 0.5;
-        return (LN_PI + Math.LN2) / 2 + Math.log(x) + (z + 0.5) * Math.log(t) - t;
-    }
-
-    return GammaLN;
-});
 
 

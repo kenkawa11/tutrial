@@ -1,4 +1,3 @@
-import { array } from 'prop-types';
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions } from 'react-native';
 import { Button, DataTable, TextInput } from 'react-native-paper';
@@ -7,26 +6,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 let targetcourserank;
 export default function RsultShow({route}) {
-    //const [inputdata,setInputdata]=React.useState({target:"",classnum:"",order:"",allnum:""});
-    const [targetclass, setTarget] = React.useState("");
-    const [classnum, setClassnum] = React.useState("");
-    const [order, setOrder] = React.useState("");
-    const [allnum, setAllnum] = React.useState("");
-    const [arufa, setArufa] = React.useState("");
-    const [rslt, setRslt] = React.useState("___");
-    const [mpc, setMpc] = React.useState("___")
-    let iniobj = [{ coursename: "", pos: "" }];
-    const [coursedata, setdata] = React.useState(iniobj);
     targetcourserank=route.params.targetclass;
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>確率計算</Text>
+            <Text style={styles.title}>目標コース以上に入れる確率:{route.params.targetresult}%</Text>
             <ScrollView style={{ width: "90%" }}>
-                <View>
-                    <Text style={styles.rslt}>
-                        目標コース以上に入れる確率:{route.params.targetresult}%
-                    </Text>
-                </View>
                 {
                   route.params.courseposlist[0].coursename != "" ?
                         <DataTable>
@@ -78,7 +62,6 @@ const styles = StyleSheet.create({
   container: {
       flex: 1,
       backgroundColor: "lightgreen",
-      paddingTop: StatusBar.currentHeight,
       alignItems: 'center',
   },
   cndinp: {

@@ -4,7 +4,7 @@
     "slug": "nativetest",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appicon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,10 +21,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/appicon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.s205.xrea.jukendata.pos",
+      "package": "com.s205.xrea.jukendata.pos"
     },
     "web": {
       "favicon": "./assets/favicon.png"

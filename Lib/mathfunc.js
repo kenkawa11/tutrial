@@ -9,7 +9,7 @@ function logfact(nn) {
 	return lsum;
 }
 
-function gammaln(z){
+export function gammaln(z){
     var p = [
         676.5203681218851,
         -1259.1392167224028,
