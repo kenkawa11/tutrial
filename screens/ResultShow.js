@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions } from 'react-native';
-import { Button, DataTable, TextInput } from 'react-native-paper';
+import { StyleSheet, Text, View, ScrollView} from 'react-native';
+import {DataTable} from 'react-native-paper';
 //import {gammaln} from '../Lib/mathfunc'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -61,26 +61,15 @@ function Tablecomponent(props) {
 const styles = StyleSheet.create({
   container: {
       flex: 1,
-      //backgroundColor: "lightgreen",
       alignItems: 'center',
   },
   cndinp: {
       width: "100%",
-      //backgroundColor:"red",
       marginTop: hp("1.6%"),
-      //backgroundColor:"lightblue"
-      //backgroundColor: '#fff',
-      //alignItems: 'center',
-      //justifyContent: 'space-between',
   },
 
   cndinptxt: {
       fontSize: wp("3%"),
-      //backgroundColor:"red",
-      //backgroundColor:"lightblue"
-      //backgroundColor: '#fff',
-      //alignItems: 'center',
-      //justifyContent: 'space-between',
   },
 
   suihei: {
@@ -92,7 +81,6 @@ const styles = StyleSheet.create({
       marginTop: hp("2%"),
       fontWeight: "bold",
       fontSize: hp('2%'),
-      //backgroundColor:"lightblue",
       textAlign: "center"
 
   },
