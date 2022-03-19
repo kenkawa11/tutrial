@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { gammaln } from '../Lib/mathfunc';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -26,56 +26,56 @@ export default function CoursePossibility({ navigation }) {
     return (
         /*         <KeyboardAvoidingView behavior={null} style={{ flex: 1 }}> */
         <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+
             <View style={styles.cndinp}>
-                <Text style={styles.cndinptxt}>目標コース:{"\n"}
-                    上から何番目かの数値又はアルファベットコース名で指定{"\n"}
-                    アルファは数値で指定(例:α2なら2)
+                <Text style={styles.cndinptxt}>
+                    目標コースは、コースのランクを数値で指定、又は{"\n"}
+                    アルファベットの場合はコース名（A,B..)での指定も可能。{"\n"}
+                    アルファは数値で指定のみ(例:α2なら2)
                 </Text>
+            </View>
+            <View style={styles.row}>
                 <TextInput
                     label="目標コース"
                     mode="outlined"
                     value={cnd.target}
                     dense={true}
                     onChangeText={text => setCnd({ ...cnd, target: text })}
-                    style={{ fontSize: hp("2%") }}
+                    style={[styles.rowtxt,{marginLeft:wp("1%")}]}
                 />
-            </View>
-            <View style={styles.cndinp}>
-                <Text style={styles.cndinptxt}>
-                    在籍校舎の全コース数を入力
-                </Text>
                 <TextInput
                     label="校舎全コース数"
                     mode="outlined"
                     value={cnd.classnum}
                     dense={true}
                     onChangeText={text => setCnd({ ...cnd, classnum: text })}
-                    style={{ fontSize: hp("2%") }}
+                    style={[styles.rowtxt,{marginLeft:wp("1%")}]}
                 />
             </View>
+            
             <View style={styles.cndinp}>
                 <Text style={styles.cndinptxt}>
-                    総合順位を入力
+                    総合順位と受験者数入力
                 </Text>
+            </View>
+            <View style={styles.row}>
+
                 <TextInput
                     label="総合順位"
                     mode="outlined"
                     value={cnd.order}
                     dense={true}
                     onChangeText={text => setCnd({ ...cnd, order: text })}
-                    style={{ fontSize: hp("2%") }}
+                    style={[styles.rowtxt,{marginLeft:wp("1%")}]}
+
                 />
-            </View>
-            <View style={styles.cndinp}>
-                <Text style={styles.cndinptxt}>
-                    テストの全受験者数を入力
-                </Text>
                 <TextInput
                     label="全受験者数"
                     mode="outlined"
                     value={cnd.allnum}
                     dense={true}
                     onChangeText={text => setCnd({ ...cnd, allnum: text })}
+                    style={[styles.rowtxt,{marginLeft:wp("1%")}]}
                 />
             </View>
             <View style={styles.cndinp}>
@@ -83,7 +83,7 @@ export default function CoursePossibility({ navigation }) {
                     αコース数を入力。入れなくてもOKだがコース名は非表示
                 </Text>
                 <TextInput
-                    label="αコース数"
+                    label="αコース数（入れなくても計算可能）"
                     mode="outlined"
                     value={cnd.arufa}
                     dense={true}
@@ -103,7 +103,7 @@ export default function CoursePossibility({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         width: '95%',
         marginLeft: "auto",
         marginRight: "auto"
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     },
 
     cndinptxt: {
+        flex:1,
         fontSize: wp("3.4%"),
     },
 
@@ -131,6 +132,18 @@ const styles = StyleSheet.create({
         fontSize: hp('2%'),
         textAlign: "center"
     },
+
+    row:{
+        flex:1,
+        flexDirection:"row"
+    },
+
+    rowtxt:{
+        flex:1, 
+        fontSize: hp("2%")
+    },
+
+
 
     title: {
         height: 60,
@@ -270,7 +283,12 @@ function InputCheckTrans(cnd) {
     }
 
     if (target_class_num > course_num || target_class_num < 1) {
-        alert("目標コースが校舎コース範囲にないかもしれません");
+        alert("目標コースが校舎コース範囲にないかもしれません。逆に入れてませんか？");
+        return null;
+    }
+
+    if (order > total|| total < 1 || order < 1) {
+        alert("順位が受験者数を超えているかもしれません。逆に入れてませんか？");
         return null;
     }
 

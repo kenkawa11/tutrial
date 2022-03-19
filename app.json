@@ -2,7 +2,7 @@
   "expo": {
     "name": "コース在籍確率計算",
     "slug": "nativetest",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/courseiconsmall.png",
     "splash": {
