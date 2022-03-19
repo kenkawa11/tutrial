@@ -9,7 +9,7 @@ export default function RsultShow({route}) {
     targetcourserank=route.params.targetclass;
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>目標コース以上に入れる確率:{route.params.targetresult}%</Text>
+            <Text style={styles.title}>目標コース以上に入れる確率:{Math.round(route.params.targetresult)}%</Text>
             <ScrollView style={{ width: "90%" }}>
                 {
                   route.params.courseposlist[0].coursename != "" ?
@@ -49,7 +49,7 @@ function Tablecomponent(props) {
 
       <DataTable.Row style={{padding: 0, backgroundColor: colorcode,borderWidth:bw,borderColor:"red",borderBottomWidth:bw,borderBottomColor:"red"}}>
           <DataTable.Cell style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>{props.course}</Text></DataTable.Cell>
-          <DataTable.Cell style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>{props.pos}%</Text></DataTable.Cell>
+          <DataTable.Cell style={{ justifyContent: "center" }}><Text style={styles.tabletxt}>{Math.round(props.pos)}%</Text></DataTable.Cell>
       </DataTable.Row>
 
   )
@@ -61,7 +61,7 @@ function Tablecomponent(props) {
 const styles = StyleSheet.create({
   container: {
       flex: 1,
-      backgroundColor: "lightgreen",
+      //backgroundColor: "lightgreen",
       alignItems: 'center',
   },
   cndinp: {

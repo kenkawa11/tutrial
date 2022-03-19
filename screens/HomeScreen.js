@@ -1,19 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, SafeAreaView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Keyboard, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { Button, DataTable, TextInput } from 'react-native-paper';
-import {gammaln} from '../Lib/mathfunc'
+import { gammaln } from '../Lib/mathfunc'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 export default function CoursePossibility({ navigation }) {
-    //const [inputdata,setInputdata]=React.useState({target:"",classnum:"",order:"",allnum:""});
+    //const [inputdata,setInputdata]=React.useState({target:"",classnum:"",order:"",allnum:"",arufa:""});
     const [targetclass, setTarget] = React.useState("");
     const [classnum, setClassnum] = React.useState("");
     const [order, setOrder] = React.useState("");
     const [allnum, setAllnum] = React.useState("");
     const [arufa, setArufa] = React.useState("");
-    const [rslt, setRslt] = React.useState("___");
-    let iniobj = [{ coursename: "", pos: "" }];
-    const [coursedata, setdata] = React.useState(iniobj);
 
     var setResult = () => {
         var cndobj = InputCheckTrans(targetclass, classnum, order, allnum);
@@ -21,8 +18,8 @@ export default function CoursePossibility({ navigation }) {
             return;
         }
         let poslist = orderposlist(cndobj.order, cndobj.kosha_course_num, cndobj.total);
-        let pos = calc(cndobj.rank, cndobj.kosha_course_num, cndobj.order, cndobj.total);
-        setRslt(pos);
+        let roundposlist = adjustpercent(poslist);
+        //let pos = calc(cndobj.rank, cndobj.kosha_course_num, cndobj.order, cndobj.total);
         let arufa_half = toHalfWidth(arufa);
         let int_course_num = Number(toHalfWidth(classnum));
         let int_arufa_num = 0;
@@ -36,86 +33,89 @@ export default function CoursePossibility({ navigation }) {
         else {
             int_arufa_num = -1;
         }
-        var objlist = poslist.map((value, index) => { return { coursename: translationCourse(index + 1, int_arufa_num, int_course_num), pos: value } });
-        var item = { targetclass: cndobj.rank, targetresult: pos, courseposlist: objlist }
+        var posfromlist = roundposlist.filter((value, index) => index < cndobj.rank).reduce((previousValue, currentValue) => previousValue + currentValue);
+        var objlist = roundposlist.map((value, index) => { return { coursename: translationCourse(index + 1, int_arufa_num, int_course_num), pos: value } });
+        var item = { targetclass: cndobj.rank, targetresult: posfromlist, courseposlist: objlist };
         const { width, height, scale } = Dimensions.get('window');
-        setdata(objlist);
         navigation.navigate("ResultScreen", item);
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>S塾の目標コースに入れる確率を計算</Text>
-            <ScrollView style={{ width: "90%" }}>
-                <View style={styles.cndinp}>
-                    <Text style={styles.cndinptxt}>目標コース:{"\n"}
-                        上から何番目かの数値又はアルファベットコース名で指定{"\n"}
-                        アルファは数値で指定(例:α2なら2)
-                    </Text>
-                    <TextInput
-                        label="目標コース"
-                        mode="outlined"
-                        value={targetclass}
-                        dense={true}
-                        onChangeText={text => setTarget(text)}
-                    />
-                </View>
+        <KeyboardAvoidingView behavior={null} style={{ flex: 1 }}>
+                <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+                    <View style={styles.cndinp}>
+                        <Text style={styles.cndinptxt}>目標コース:{"\n"}
+                            上から何番目かの数値又はアルファベットコース名で指定{"\n"}
+                            アルファは数値で指定(例:α2なら2)
+                        </Text>
+                        <TextInput
+                            label="目標コース"
+                            mode="outlined"
+                            value={targetclass}
+                            dense={true}
+                            onChangeText={text => setTarget(text)}
+                            style={{ fontSize: hp("2%") }}
+                        />
+                    </View>
 
-                <View style={styles.cndinp}>
-                    <Text style={styles.cndinptxt}>
-                        在籍校舎の全コース数を入力
-                    </Text>
-                    <TextInput
-                        label="校舎全コース数"
-                        mode="outlined"
-                        value={classnum}
-                        dense={true}
-                        onChangeText={text => setClassnum(text)}
-                    />
-                </View>
-                <View style={styles.cndinp}>
-                    <Text style={styles.cndinptxt}>
-                        総合順位を入力
-                    </Text>
-                    <TextInput
-                        label="総合順位"
-                        mode="outlined"
-                        value={order}
-                        dense={true}
-                        onChangeText={text => setOrder(text)}
-                    />
-                </View>
-                <View style={styles.cndinp}>
-                    <Text style={styles.cndinptxt}>
-                        テストの全受験者数を入力
-                    </Text>
-                    <TextInput
-                        label="全受験者数"
-                        mode="outlined"
-                        value={allnum}
-                        dense={true}
-                        onChangeText={text => setAllnum(text)}
-                    />
-                </View>
-                <View style={styles.cndinp}>
-                    <Text style={styles.cndinptxt}>
-                        αコース数を入力。入れなくてもOKだがコース名は非表示
-                    </Text>
-                    <TextInput
-                        label="αコース数"
-                        mode="outlined"
-                        value={arufa}
-                        dense={true}
-                        onChangeText={text => setArufa(text)}
-                    />
-                </View>
-                <View style={styles.cndinp}>
-                    <Button mode="contained" onPress={setResult}>
-                        <Text style={{ fontSize: wp("3%") }}>計算(1回でうまくいかない場合はもう一回タッチ)</Text>
-                    </Button>
-                </View>
-            </ScrollView>
-        </View >
+                    <View style={styles.cndinp}>
+                        <Text style={styles.cndinptxt}>
+                            在籍校舎の全コース数を入力
+                        </Text>
+                        <TextInput
+                            label="校舎全コース数"
+                            mode="outlined"
+                            value={classnum}
+                            dense={true}
+                            onChangeText={text => setClassnum(text)}
+                            style={{ fontSize: hp("2%") }}
+                        />
+                    </View>
+                    <View style={styles.cndinp}>
+                        <Text style={styles.cndinptxt}>
+                            総合順位を入力
+                        </Text>
+                        <TextInput
+                            label="総合順位"
+                            mode="outlined"
+                            value={order}
+                            dense={true}
+                            onChangeText={text => setOrder(text)}
+                            style={{ fontSize: hp("2%") }}
+                        />
+                    </View>
+                    <View style={styles.cndinp}>
+                        <Text style={styles.cndinptxt}>
+                            テストの全受験者数を入力
+                        </Text>
+                        <TextInput
+                            label="全受験者数"
+                            mode="outlined"
+                            value={allnum}
+                            dense={true}
+                            onChangeText={text => setAllnum(text)}
+                        />
+                    </View>
+                    <View style={styles.cndinp}>
+                        <Text style={styles.cndinptxt}>
+                            αコース数を入力。入れなくてもOKだがコース名は非表示
+                        </Text>
+                        <TextInput
+                            label="αコース数"
+                            mode="outlined"
+                            value={arufa}
+                            dense={true}
+                            onChangeText={text => setArufa(text)}
+                            style={{ fontSize: hp("2%") }}
+                        />
+                    </View>
+                    <View style={styles.cndinp}>
+                        <Button mode="contained" onPress={setResult} labelStyle={{ fontWeight: "bold", fontSize: wp("4%") }} icon="calculator">
+                            実行
+                        </Button>
+                    </View>
+                </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -123,22 +123,25 @@ export default function CoursePossibility({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "lightgreen",
-        alignItems: 'center',
+        width:'95%',
+        marginLeft:"auto",
+        marginRight:"auto"
+        //backgroundColor: "yellow",
+        //alignItems: 'center',
     },
     cndinp: {
         width: "100%",
         marginTop: hp("1.6%"),
+
     },
 
     cndinptxt: {
-        fontSize: wp("3%"),
+        fontSize: wp("3.4%"),
     },
 
     suihei: {
         flexDirection: "row",
-        fontSize: 30
+        fontSize: 30,
     },
 
     rslt: {
@@ -179,7 +182,11 @@ function translationCourse(rank, arufa, totalcoursenum) {
     if (arufa == -1) {
         return rank;
     }
+
     if (rank <= arufa) {
+        if (arufa == 1) {
+            return "α"
+        }
         return "α" + rank;
     }
 
@@ -193,7 +200,6 @@ function orderposlist(order, course_num, total) {
     let orderpos = [];
     for (let i = 1; i <= koshaninzu; i++) {
         orderpos.push(calcpossibility(i, course_num, order, total));
-
     }
     var classpos = [];
     for (let j = 0; j < course_num; j++) {
@@ -202,13 +208,25 @@ function orderposlist(order, course_num, total) {
         for (var i = head; i < head + 18; i++) {
             sum += orderpos[i - 1];
         }
-        classpos.push(Math.round(sum * 100));
+        classpos.push(sum * 100);
     }
+
     return classpos;
+}
+
+function adjustpercent(poslist) {
+    var maxindex = poslist.indexOf(Math.max.apply(null, poslist));
+    var roundpos = poslist.map(value => Math.round(value));
+    var maxround = 100 - roundpos.filter((value, index) => index != maxindex).reduce((prev, current) => prev + current);
+    roundpos[maxindex] = maxround;
+    return roundpos;
 }
 
 
 function calcpossibility(koshaorder, course_num, order, total) {
+    if (koshaorder > order) {
+        return 0;
+    }
     var upperInKosha = koshaorder - 1
     var kosha_ninzu = course_num * 18 - 1; //校舎内の自分以外の人数
     var total_order = order - 1; //自分より上の順位の人数
@@ -302,7 +320,7 @@ function calc(target_class_num, course_num, order, total) {
         D = total_lower - B;
         pos_sum = pos_sum + fispos(upperInKosha, B, C, D, kosha_ninzu, other_kousha_ninzu, total_order, total_lower, total_ninzu);
     }
-    return Math.round((1 - pos_sum) * 100);
+    return ((1 - pos_sum) * 100);
 }
 
 
